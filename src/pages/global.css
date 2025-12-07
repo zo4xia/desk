@@ -1,0 +1,258 @@
+/* 全局样式：约束页面尺寸，适配移动端 */
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 480px; /* PC端限制，防变形 */
+  min-height: 100vh;
+  margin: 0 auto;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 50%, #f0fdfa 100%);
+}
+
+/* ==================== 从旧代码抄的动画效果 ==================== */
+
+/* 浮动动画 - 上下起伏 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.float { animation: float 4s ease-in-out infinite; }
+
+/* 脉冲动画 - 呼吸效果 */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.pulse { animation: pulse 3s ease-in-out infinite; }
+
+/* 淡入上移 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+
+/* 闪光效果 - 加载占位 */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 浮动动画变体 - 粒子用 */
+@keyframes float-0 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+@keyframes float-1 {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(20px); }
+}
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10px, -15px); }
+}
+
+/* ==================== 聊天气泡样式 - 直接抄的 ==================== */
+
+.message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message.user {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  margin-left: auto;
+  border-radius: 18px 18px 4px 18px;
+}
+
+.message.assistant {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px 18px 18px 4px;
+}
+
+/* ==================== 卡片样式 - 直接抄的 ==================== */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+/* ==================== 按钮样式 - 直接抄的 ==================== */
+
+.btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* ==================== 输入框样式 - 直接抄的 ==================== */
+
+.input-field {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.input-field:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* ==================== 头像样式 - 直接抄的 ==================== */
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #10b981;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+  object-fit: cover;
+}
+
+.avatar-sm {
+  width: 40px;
+  height: 40px;
+}
+
+.avatar-lg {
+  width: 100px;
+  height: 100px;
+}
+
+/* 在线状态绿点 */
+.online-dot {
+  width: 12px;
+  height: 12px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
+/* ==================== 背景效果 - 骚包动效 ==================== */
+
+/* 流动光效圆 */
+.glow-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.3;
+}
+
+.glow-circle.emerald {
+  background: #10b981;
+}
+
+.glow-circle.teal {
+  background: #14b8a6;
+}
+
+/* 网格背景 */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ==================== 毛璃璃效果 ==================== */
+
+.glass {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ==================== 原有样式保留 ==================== */
+
+/* 覆写 ADM 组件默认样式，适配黏土线框 */
+.am-card {
+  border-radius: 24px !important;
+  border: 1px solid #e8e8e8 !important;
+  box-shadow: 0 0 0 2px #fff inset !important; /* 黏土双层线 */
+}
+.am-button {
+  border-radius: 16px !important;
+  height: 48px !important;
+}
+.am-input {
+  border-radius: 12px !important;
+  height: 40px !important;
+}
+
+/* 登录页卡片样式 */
+.login-page .clay-card {
+  width: 90%;
+  max-width: 320px;
+  margin: 20px auto;
+  padding: 30px 20px;
+  border: 1px solid #e8e8e8 !important;
+  box-shadow: 0 0 0 2px #fff inset !important;
+  border-radius: 24px !important;
+}
+
+/* cute-bounce 点击动效 */
+.cute-bounce:active {
+  transform: scale(0.95); /* 缩放至95% */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影加深 */
+  transition: all 0.2s ease;
+}
