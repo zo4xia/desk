@@ -1,55 +1,81 @@
-import { useState } from 'react';
-import { NavBar, List, PullToRefresh, Empty, Badge } from 'antd-mobile';
+import { useState, useEffect } from 'react';
+import { NavBar, List, PullToRefresh, Empty, Badge, Toast } from 'antd-mobile';
 import { RightOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import MapView from '../components/MapView';
-import { SPOTS_DATA } from '../services/staticData';
+import { apiService } from '../services/apiService';
 import './global.css';
 
 interface Spot {
   id: string;
   name: string;
-  address: string;
+  address?: string;
+  location?: string;
   type: 'red-culture' | 'nature-spots' | 'people' | 'media' | 'activities';
   category?: string;
+  desc?: string;
 }
 
 const SpotListPage = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  const [spots] = useState<Spot[]>([
-    {
-      id: '1',
-      name: '旌义状石碑',
-      address: '东里村侨光亭旁',
-      type: 'red-culture' as const,
-    },
-    {
-      id: '2',
-      name: '辛亥革命纪念馆',
-      address: '东里村郑氏宗祠',
-      type: 'red-culture' as const,
-    },
-    {
-      id: '3',
-      name: '侨光亭',
-      address: '东里村中心',
-      type: 'red-culture' as const,
-    },
-    {
-      id: '4',
-      name: '东里山水景观',
-      address: '东里村北部',
-      type: 'nature-spots' as const,
-    },
-    {
-      id: '5',
-      name: '生态休闲区',
-      address: '东里村南部',
-      type: 'nature-spots' as const,
-    },
-  ]);
+  const [spots, setSpots] = useState<Spot[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // 根据类型获取数据
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        let response;
+        if (type === 'red-culture' || type === 'nature-spots') {
+          // 获取景点数据
+          response = await apiService.spots.getSpots({ 
+            category: type,
+            limit: 50 
+          });
+        } else if (type === 'people') {
+          // 获取人物数据
+          response = await apiService.figures.getFigures({ 
+            category: 'sages', // 或其他相关类别
+            limit: 50 
+          });
+        } else {
+          // 默认获取景点数据
+          response = await apiService.spots.getSpots({ limit: 50 });
+        }
+
+        if (response.success && response.data) {
+          // 适配数据结构
+          const adaptedSpots = response.data.map((item: any) => ({
+            id: item.id,
+            name: item.name || item.title,
+            address: item.location || item.address,
+            type: type as 'red-culture' | 'nature-spots' | 'people' | 'media' | 'activities',
+            desc: item.desc || item.summary,
+          }));
+          setSpots(adaptedSpots);
+        } else {
+          Toast.show({
+            content: response.error || '获取数据失败',
+            duration: 2000,
+            position: 'bottom',
+          });
+        }
+      } catch (error) {
+        console.error('获取数据失败:', error);
+        Toast.show({
+          content: '网络错误，请稍后重试',
+          duration: 2000,
+          position: 'bottom',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [type]);
 
   const getTitle = () => {
     const titles: Record<string, string> = {

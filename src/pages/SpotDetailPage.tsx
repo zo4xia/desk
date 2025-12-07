@@ -1,42 +1,91 @@
-import { useState } from 'react';
-import { NavBar, Card, Button, Tag, Slider, Modal, Image } from 'antd-mobile';
+import { useState, useEffect } from 'react';
+import { NavBar, Card, Button, Tag, Slider, Modal, Image, Toast } from 'antd-mobile';
 import {
   ShareAltOutlined,
   HeartOutlined,
   HeartFilled,
 } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
+import { apiService } from '../services/apiService';
 import './global.css';
 
 interface SpotDetail {
   id: string;
   name: string;
-  coordinates: string;
+  coordinates?: string;
+  location?: string;
   introduction: string;
-  story: string;
+  desc?: string;
+  story?: string;
   imageUrl?: string;
+  audioUrl?: string;
+  type?: string;
+  category?: string;
   isCheckedIn?: boolean;
 }
 
 const SpotDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [spotDetail, setSpotDetail] = useState<SpotDetail | null>(null);
   const [isCollected, setIsCollected] = useState(false);
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const spotDetail: SpotDetail = {
-    id: id || '1',
-    name: '旌义状石碑',
-    coordinates: '东经118.2042° 北纬25.2357°',
-    introduction:
-      '孙中山为表彰侨领郑玉指革命贡献颁发的旌义状石刻，立于侨光亭内，见证百年爱国情怀。',
-    story:
-      '1912年，郑玉指先生捐赠巨款支持辛亥革命，孙中山亲书"旌义状"表彰其功绩...',
-    imageUrl: '🏛️',
-    isCheckedIn: false,
-  };
+  // 获取景点详情
+  useEffect(() => {
+    const fetchSpotDetail = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+      try {
+        // 尝试获取景点详情
+        let response = await apiService.spots.getSpotById(id);
+        
+        if (!response.success || !response.data) {
+          // 如果景点不存在，尝试获取人物详情
+          response = await apiService.figures.getFigureById(id);
+        }
+        
+        if (response.success && response.data) {
+          const detail = {
+            id: response.data.id,
+            name: response.data.name || response.data.title,
+            coordinates: response.data.coordinates || response.data.location,
+            location: response.data.location,
+            introduction: response.data.desc || response.data.introduction || response.data.story,
+            desc: response.data.desc,
+            story: response.data.story || response.data.biography,
+            imageUrl: response.data.image || response.data.imageUrl,
+            audioUrl: response.data.audioUrl,
+            type: response.data.type,
+            category: response.data.category,
+            isCheckedIn: response.data.isCheckedIn || false,
+          };
+          setSpotDetail(detail);
+        } else {
+          Toast.show({
+            content: response.error || '获取景点详情失败',
+            duration: 2000,
+            position: 'bottom',
+          });
+        }
+      } catch (error) {
+        console.error('获取景点详情失败:', error);
+        Toast.show({
+          content: '网络错误，请稍后重试',
+          duration: 2000,
+          position: 'bottom',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpotDetail();
+  }, [id]);
 
   const handleShare = () => {
     console.log('分享景点:', spotDetail.name);

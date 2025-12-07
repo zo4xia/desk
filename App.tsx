@@ -3,6 +3,8 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import AdminPanelRefactored from './src/components/AdminPanelRefactored';
 import AgentManager from './src/components/AgentManager';
+import OptimizedAgentManager from './src/components/OptimizedAgentManager';
+import PerformanceMonitor from './src/components/PerformanceMonitor';
 
 // 🏛️ 东里村智能导游系统 - 主应用组件
 // 军工品质，精准高效，极简实用
@@ -154,11 +156,12 @@ const App: React.FC = () => {
             {activeView === 'admin' ? (
               <AdminPanelRefactored />
             ) : (
-              <AgentManager />
+              <OptimizedAgentManager />
             )}
           </div>
         </div>
       </div>
+      <PerformanceMonitor />
     </ConfigProvider>
   );
 };
