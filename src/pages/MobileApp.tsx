@@ -11,8 +11,11 @@ import { ConfigProvider as ADMConfigProvider } from 'antd-mobile';
 // 导入移动端页面 - 路径已修正
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
+import ModernHomePage from './ModernHomePage';
 import CategoryPage from './CategoryPage';
+import ModernCategoryPage from './ModernCategoryPage';
 import ChatPage from './ChatPage';
+import ModernChatPage from './ModernChatPage';
 import SpotListPage from './SpotListPage';
 import SpotDetailPage from './SpotDetailPage';
 import UserProfilePage from './UserProfilePage';
@@ -40,10 +43,13 @@ const MobileApp = () => {
             {/* 入口流程 */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/modern-home" element={<ModernHomePage />} />
             
             {/* 核心导航 */}
             <Route path="/category" element={<CategoryPage />} />
+            <Route path="/modern-category" element={<ModernCategoryPage />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/modern-chat" element={<ModernChatPage />} />
             
             {/* 景点相关 */}
             <Route path="/red-culture" element={<RedCultureListPage />} />
@@ -62,9 +68,9 @@ const MobileApp = () => {
             {/* 个人中心 */}
             <Route path="/profile" element={<UserProfilePage />} />
             
-            {/* 默认跳转 */}
-            <Route path="/" element={<Navigate to="/home" replace />} />
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/* 默认跳转到现代化主页 */}
+            <Route path="/" element={<Navigate to="/modern-home" replace />} />
+            <Route path="*" element={<Navigate to="/modern-home" replace />} />
           </Routes>
         </ConfigProvider>
       </ADMConfigProvider>
