@@ -1,0 +1,41 @@
+{
+  "name": "village-guide-ai-system",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "node server.cjs",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "code-check": "npm run type-check && npm run lint && npm run format:check",
+    "code-fix": "npm run format && npm run lint:fix"
+  },
+  "dependencies": {
+    "@ant-design/icons": "6.1.0",
+    "antd": "6.0.1",
+    "antd-mobile": "5.41.1",
+    "antd-mobile-icons": "0.3.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "leaflet": "1.9.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.23.1"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.12",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "prettier": "^3.7.4",
+    "typescript": "^5.4.5",
+    "vite": "^7.2.6"
+  }
+}
